@@ -4,18 +4,19 @@ const morgan = require('morgan');
 const html = require('html-template-tag');
 const main = require('../views/main');
 const { db, Page, User } = require('./models');
-const { wikiRouter } = require('./routes');
+const { wikiRouter, userRouter } = require('./routes');
 
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname + '/public'));
+app.use(express.static('../' + __dirname + '/public'));
 
-app.use('/', wikiRouter);
-// app.use('/users', userRouter);
+app.use('/wiki', wikiRouter);
+
+app.use('/users', userRouter);
 
 app.get('/', (req, res, next) => {
-  res.send(main(''));
+  res.redirect('/wiki');
 });
 
 const port = 3000;

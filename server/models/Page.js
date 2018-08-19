@@ -4,23 +4,25 @@ const db = require('./db');
 const Page = db.define('page', {
   title: {
     type: Sequelize.STRING,
-    validate: {
-      allowNull: false,
-    },
+    allowNull: false,
   },
   slug: {
     type: Sequelize.STRING,
-    validate: {
-      allowNull: false,
-    },
+    allowNull: false,
   },
   content: {
     type: Sequelize.TEXT,
-    validate: {
-      allowNull: false,
-    },
+    allowNull: false,
   },
   status: Sequelize.ENUM('open', 'closed'),
+});
+
+function generateSlug(title) {
+  return title.replace(/\s+/g, '_').replace(/\W/g, '');
+}
+
+Page.beforeValidate(userInstance => {
+  userInstance.slug = generateSlug(userInstance.title);
 });
 
 module.exports = Page;
